@@ -1,46 +1,49 @@
+import React, { useEffect, useState } from 'react';
 import Header from './Header';
 import CardPizza from './CardPizza';
-import pizzaE from '../assets/img/pizzaE.jpg';
-import pizzaN from '../assets/img/pizzaN.jpg';
-import pizzaP from '../assets/img/pizzaP.jpg';
-import eyes from '../assets/img/eyes.png';
-
 
 const Home = () => {
-  return (
-    <>
-        <div className='principal-container'>
-            <Header></Header>
-        </div>
+    const [pizzas, setPizzas] = useState([]);
+    const url = "http://localhost:5000/api/pizzas";
 
-        <div className="pizza-list">
-          <CardPizza
-            name="Napolitana"
-            price={5950}
-            ingredients={["mozzarella", "tomates", "jamón", "orégano"]}
-            img={pizzaN}
-            e={eyes}
-          />
-          <CardPizza
-            name="Española"
-            price={6950}
-            ingredients={["mozzarella", "gorgonzola", "parmesano", "provolone"]}
-            img={pizzaE}
-            e={eyes}
-          />
-          <CardPizza
-            name="Pepperoni"
-            price={6950}
-            ingredients={["mozzarella", "pepperoni", "orégano"]}
-            img={pizzaP}
-            e={eyes}
-          />
-      </div>
+    // Función para obtener todas las pizzas desde la API
+    const getPizzas = async () => {
+        try {
+            const response = await fetch(url);
+            if (!response.ok) {
+                throw new Error("Error al obtener los datos");
+            }
+            const pizzasData = await response.json();
+            setPizzas(pizzasData);
+        } catch (error) {
+            console.error(error.message);
+        }
+    };
 
-    </>
+    useEffect(() => {
+        fetch('http://localhost:5000/api/pizzas');
+    }, []);
 
-   
-    )
+    return (
+        <>
+            <div className='principal-container'>
+                <Header />
+            </div>
+
+            <div className="pizza-list">
+                {pizzas.map((pizza) => (
+                    <CardPizza
+                        key={pizza.id}
+                        name={pizza.name}
+                        price={pizza.price}
+                        ingredients={pizza.ingredients}
+                        img={pizza.img}
+                        e={eyes}
+                    />
+                ))}
+            </div>
+        </>
+    );
 }
 
 export default Home;

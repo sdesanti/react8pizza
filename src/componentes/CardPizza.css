@@ -1,0 +1,28 @@
+.pizza-card {
+    width: 100%;
+    max-width: 300px;
+    margin: 15px;
+  }
+  
+  .pizza-image {
+    width: 100%;
+    height: auto;
+  }
+  
+  .pizza-name, .pizza-price {
+    margin: 10px 0;
+  }
+  
+  .pizza-ingredients {
+    padding: 0;
+  }
+  
+  .pizza-ingredients li {
+    margin: 5px 0;
+  }
+  
+  @media (max-width: 768px) {
+    .pizza-card {
+      max-width: 100%;
+    }
+  }

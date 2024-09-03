@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Container, Row, Col, Modal, Button } from 'react-bootstrap';
 import PropTypes from 'prop-types';
-import { data } from './pizzas';
+import { data } from '../componentes/pizzas';
 
 
 const ItemCarrito = ({ pizza, aumentarCantidad, disminuirCantidad, removerDelCarrito }) => (

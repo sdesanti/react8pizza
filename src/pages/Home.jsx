@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react';
-import Header from './Header';
-import CardPizza from './CardPizza';
+import { useEffect, useState } from 'react';
+import Header from '../componentes/Header';
+import CardPizza from '../componentes/CardPizza';
 
 const Home = () => {
     const [pizzas, setPizzas] = useState([]);
@@ -27,7 +27,7 @@ const Home = () => {
     return (
         <>
             <div className='principal-container'>
-                <Header />
+                <Header></Header>
             </div>
 
             <div className="pizza-list">
@@ -38,7 +38,6 @@ const Home = () => {
                         price={pizza.price}
                         ingredients={pizza.ingredients}
                         img={pizza.img}
-                        e={eyes}
                     />
                 ))}
             </div>

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import Card from 'react-bootstrap/Card';
 import Button from 'react-bootstrap/Button';
+import { Link } from 'react-router-dom';
 
 const Pizza = () => {
     const [pizza, setPizza] = useState({});
@@ -48,7 +49,7 @@ const Pizza = () => {
                         ))}
                     </ul>
                     <div className="d-flex flex-column align-items-center">
-                        <Button className='bg-dark mb-2'>Añadir</Button>
+                        <Button className='bg-dark mb-2'><Link to= "/cart">Añadir</Link></Button>
                         <Button className='text-dark bg-white'>Ver más</Button>
                     </div>
                 </div>

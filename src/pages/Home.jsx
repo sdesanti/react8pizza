@@ -1,12 +1,14 @@
 import { useEffect, useState } from 'react';
 import Header from '../componentes/Header';
 import CardPizza from '../componentes/CardPizza';
+import { useCart } from '../context/CartContext';
 
 const Home = () => {
     const [pizzas, setPizzas] = useState([]);
+    const { agregarAlCarrito } = useCart();
+
     const url = "http://localhost:5000/api/pizzas";
 
-    // Función para obtener todas las pizzas desde la API
     const getPizzas = async () => {
         try {
             const response = await fetch(url);
@@ -21,13 +23,13 @@ const Home = () => {
     };
 
     useEffect(() => {
-        fetch('http://localhost:5000/api/pizzas');
+        getPizzas();
     }, []);
 
     return (
         <>
             <div className='principal-container'>
-                <Header></Header>
+                <Header />
             </div>
 
             <div className="pizza-list">
@@ -38,6 +40,7 @@ const Home = () => {
                         price={pizza.price}
                         ingredients={pizza.ingredients}
                         img={pizza.img}
+                        onAddToCart={() => agregarAlCarrito(pizza)}
                     />
                 ))}
             </div>

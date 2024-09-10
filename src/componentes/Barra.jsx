@@ -5,19 +5,18 @@ import carroCompra from '../assets/img/carroCompra.png';
 import lockOpen from '../assets/img/lockOpen.png';
 import lock from '../assets/img/lock.png';
 import { Link } from 'react-router-dom';
+import { useCart } from '../context/CartContext';
 
 const Barra = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const total = 25000;
-  const precioTotal = Intl.NumberFormat("de-DE").format(total);
+  const { calcularTotal } = useCart();
+  const precioTotal = Intl.NumberFormat("de-DE").format(calcularTotal());
 
   const handleLogin = () => {
-    // Lógica de login
     setIsLoggedIn(true);
   };
 
   const handleLogout = () => {
-    // Lógica de logout
     setIsLoggedIn(false);
   };
 

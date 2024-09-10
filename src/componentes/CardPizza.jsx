@@ -1,34 +1,25 @@
-import 'bootstrap/dist/css/bootstrap.min.css';
-import { Card, Button } from "react-bootstrap";
 
-const CardPizza = ({ name, price, ingredients, img }) => {
-  const styleCard = { width: '25%', height: '100%', margin: '30px 0px' };
-  const styleCardBody = {
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    textAlign: 'center'
-  };
-  return (
-    <div className='d-flex flex-row justify-content-center'>
-      <Card style={styleCard}>
-        <img src={img} alt={name} className="pizza-image" />
-        <div className="card-body" style={styleCardBody}>
-          <h2 className="pizza-name">{name}</h2>
-          <p className="pizza-price">${price}</p>
-          <ul className="pizza-ingredients">
-            {ingredients.map((ingredient, index) => (
-              <li key={index}>{ingredient}</li>
-            ))}
-          </ul>
-          <div className="d-flex flex-column align-items-center">
-            <Button className='bg-dark mb-2'>Añadir</Button>
-            <Button className='text-dark bg-white'>Ver más</Button>
-          </div>
+import PropTypes from 'prop-types';
+
+const CardPizza = ({ name, price, ingredients, img, onAddToCart }) => {
+    return (
+        <div className="card">
+            <img src={img} alt={name} />
+            <h3>{name}</h3>
+            <p>{ingredients.join(', ')}</p>
+            <p>Precio: ${price}</p>
+            <button onClick={onAddToCart}>Añadir al carrito</button>
         </div>
-      </Card>
-    </div>
-  );
+    );
+}
+
+
+CardPizza.propTypes = {
+    name: PropTypes.string.isRequired,
+    price: PropTypes.number.isRequired,
+    ingredients: PropTypes.arrayOf(PropTypes.string).isRequired,
+    img: PropTypes.string.isRequired,
+    onAddToCart: PropTypes.func.isRequired,
 };
 
 export default CardPizza;

@@ -53,6 +53,18 @@ button:focus,
 button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
 }
+.active {
+    color: white; 
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.8), 0 0 20px rgba(255, 255, 255, 0.6);
+    transition: text-shadow 0.3s ease;
+    padding: 1rem;
+}
+.notactive {
+  color: #ddd;
+  text-shadow: none;
+  transition: text-shadow 0.3s ease;
+  padding: 1rem;
+}
 
 @media (prefers-color-scheme: light) {
   :root {
@@ -64,5 +76,18 @@ button:focus-visible {
   }
   button {
     background-color: #f9f9f9;
+  }
+  .active {
+    color: white; 
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.8), 0 0 20px rgba(255, 255, 255, 0.6);
+    transition: text-shadow 0.3s ease;
+    padding: 1rem;
+  }
+
+  .notactive {
+    color: #ddd;
+    text-shadow: none;
+    transition: text-shadow 0.3s ease;
+    padding: 1rem;
   }
 }

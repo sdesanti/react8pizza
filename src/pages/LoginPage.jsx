@@ -1,9 +1,19 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useUser } from '../context/UsuarioContexto';
 
 const LoginPage = () => {
+    const { token } = useUser();
+    const navigate = useNavigate();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState(false);
+
+    useEffect(() => {
+        if (token){
+            navigate('/');
+        }
+    }, [token, navigate]);
 
     const validarDatos = (e) => {
         e.preventDefault();

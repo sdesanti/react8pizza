@@ -1,8 +1,13 @@
-import { createContext, useState } from 'react';
+import { createContext, useState, useContext } from 'react';
 import PropTypes from 'prop-types';
 
 // Crear el contexto del carrito
 const CartContext = createContext();
+
+// Hook personalizado para consumir el contexto
+export const useCart = () => {
+  return useContext(CartContext);
+};
 
 // Proveedor del contexto
 export const CartProvider = ({ children }) => {
@@ -49,9 +54,10 @@ export const CartProvider = ({ children }) => {
     return carrito.reduce((acc, item) => acc + item.price * item.cantidad, 0);
   };
 
+  // Aquí pasamos el value correctamente
   return (
     <CartContext.Provider
-      value={{
+      value = {{
         carrito,
         agregarAlCarrito,
         removerDelCarrito,

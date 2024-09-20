@@ -1,24 +1,18 @@
-import { useState } from 'react';
 import { Navbar, Container, Nav, Button, Image, Form } from 'react-bootstrap';
 import trozo from '../assets/img/trozo.png';
 import carroCompra from '../assets/img/carroCompra.png';
 import lockOpen from '../assets/img/lockOpen.png';
 import lock from '../assets/img/lock.png';
-import { Link } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import { useCart } from '../context/CartContext';
+import { useUser } from '../context/UsuarioContexto';
 
 const Barra = () => {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const styles = 'text-white ms-3 text-decoration-none';
+  const setActiveClass = ({ isActive }) => (isActive ? `active ${styles}` : `notactive ${styles}`);
   const { calcularTotal } = useCart();
+  const { token, logout } = useUser(); 
   const precioTotal = Intl.NumberFormat("de-DE").format(calcularTotal());
-
-  const handleLogin = () => {
-    setIsLoggedIn(true);
-  };
-
-  const handleLogout = () => {
-    setIsLoggedIn(false);
-  };
 
   return (
     <Navbar expand="lg" className="bg-dark" variant='dark'>
@@ -27,25 +21,31 @@ const Barra = () => {
         <Navbar.Toggle aria-controls="navbarScroll" />
         <Navbar.Collapse id="navbarScroll">
           <Nav className="me-auto">
-            <Nav.Link className="text-white" href="link"> <img src={trozo} alt="trozoPizza" /><Link to= "/">Home</Link></Nav.Link>
-
+            <NavLink className={setActiveClass} to="/"> 
+              <img src={trozo} alt="trozoPizza"/> Home
+            </NavLink>
           </Nav>
-          <Nav>
-            {isLoggedIn ? (
-              <Button variant="link" className="text-white" onClick={handleLogout}>
-                <Image src={lockOpen} alt="Profile" /><Link to="/profile">Profile</Link>
-              </Button>
-            ) : (
+          <div className="d-flex">
+            {token ? ( 
               <>
-                <Button variant="link" className="text-white" onClick={handleLogin}>
-                  <Image src={lock} alt="Login" /><Link to="/login">Login</Link>
-                </Button>
-                <Button variant="link" className="text-white">
-                  <Image src={lock} alt="Register" /> <Link to="/register">Register</Link>
+                <NavLink className={setActiveClass} to="/profile"> 
+                  <Image src={lockOpen} alt="Profile" /> Profile
+                </NavLink>
+                <Button variant="link" className={styles} onClick={logout}>
+                  Logout
                 </Button>
               </>
+            ) : (
+              <>
+                <NavLink className={setActiveClass} to="/login"> 
+                  <Image src={lock} alt="Login" /> Login
+                </NavLink>
+                <NavLink className={setActiveClass} to="/register"> 
+                  <Image src={lock} alt="Register" /> Register
+                </NavLink>
+              </>
             )}
-          </Nav>
+          </div>
           <Form className="d-flex">
             <Button variant="outline-light" className="text-primary">
               <Image src={carroCompra} alt="Carrito de compras" /> Total: ${precioTotal}

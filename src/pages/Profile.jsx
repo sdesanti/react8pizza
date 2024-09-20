@@ -1,7 +1,18 @@
 import { Button, Col, Form } from "react-bootstrap";
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { useEffect } from "react";
+import { useUser } from '../context/UsuarioContexto'
 
 const Profile = () => {
+  const { token } = useUser();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!token) {
+      navigate('/login');
+    }
+  }, [token, navigate]);
+  
   return (
     <div>
       <div className="container-fluid profile">

@@ -1,8 +1,10 @@
-import { useCart } from '../context/useCart';
-import { Container, Row, Col } from 'react-bootstrap';
+import { useCart } from '../context/CartContext';
+import { useUser } from '../context/UsuarioContexto';
+import { Container, Row, Col, Button } from 'react-bootstrap';
 
 const Cart = () => {
   const { carrito, aumentarCantidad, disminuirCantidad, removerDelCarrito, calcularTotal } = useCart();
+  const { token } = useUser();
 
   return (
     <div className="carrito pb-2">
@@ -30,6 +32,12 @@ const Cart = () => {
         <h4 className="text-end w-100 m-2" style={{ color: "#03bcf4" }}>
           🍕 Total: ${calcularTotal().toLocaleString()}
         </h4>
+        <Button 
+          variant="primary" 
+          disabled={!token}  // Deshabilitar el botón si no hay token
+        >
+          Pagar
+        </Button>
       </Container>
     </div>
   );

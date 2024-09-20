@@ -1,61 +1,56 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react'; 
+import { useParams } from 'react-router-dom';
 import Card from 'react-bootstrap/Card';
 import Button from 'react-bootstrap/Button';
-import { Link } from 'react-router-dom';
 
 const Pizza = () => {
-    const [pizza, setPizza] = useState({});
-    
+    const { id } = useParams();  // Obtener el id de la URL
+    const [pizza, setPizza] = useState(null);
+    const [error, setError] = useState(null);
+
     // URL de la API
-    const url = "http://localhost:5000/api/pizzas/p001";
-    const getPizza = async () => {
+    const url = `http://localhost:5000/api/pizzas/${id.toLowerCase()}`;
+
+    const getPizza = useCallback(async () => {
         try {
             const response = await fetch(url);
             if (!response.ok) {
-                throw new Error("Error al obtener los datos");
+                console.error(`Error: ${response.status} - ${response.statusText}`);
+                throw new Error("Pizza no encontrada");
             }
             const pizzaData = await response.json();
             setPizza(pizzaData);
         } catch (error) {
-            console.error(error.message);
+            console.error("Error en la petición:", error);
+            setError("No se pudo cargar la pizza.");
         }
-    };
+    }, [url]);  // Elimina 'id' de las dependencias, solo deja 'url'
 
     useEffect(() => {
         getPizza();
-    }, []);
+    }, [getPizza]);
 
-    const styleCard = {
-      width: "25%",
-      height: "auto",
-      margin: "40px 10px 8px 20px" 
-    };
+    if (error) {
+        return <div>{error}</div>;
+    }
 
-    const ingredientes = pizza.ingredients ? pizza.ingredients.join(", ") : "";
+    if (!pizza) {
+        return <div>Cargando...</div>;
+    }
 
     return (
         <div className='d-flex flex-row justify-content-center'>
-            <Card style={styleCard}>
-                {/* Imagen de la pizza */}
-                <Card.Img src={pizza.img} alt={pizza.name} className="pizza-image" />
-
-                {/* Cuerpo de la tarjeta */}
-                <div className="card-body">
-                    <h2 className="pizza-name">{pizza.name}</h2>
-                    <p className="pizza-price">${pizza.price}</p>
-                    <ul className="pizza-ingredients">
-                        {pizza.ingredients && pizza.ingredients.map((ingredient, index) => (
-                            <li key={index}>{ingredient}</li>
-                        ))}
-                    </ul>
-                    <div className="d-flex flex-column align-items-center">
-                        <Button className='bg-dark mb-2'><Link to= "/cart">Añadir</Link></Button>
-                        <Button className='text-dark bg-white'>Ver más</Button>
-                    </div>
-                </div>
+            <Card>
+                <Card.Img variant="top" src={pizza.img} alt={pizza.name} />
+                <Card.Body>
+                    <Card.Title>{pizza.name}</Card.Title>
+                    <Card.Text>{pizza.desc}</Card.Text>
+                    <Card.Text>Precio: ${pizza.price}</Card.Text>
+                    <Button variant="primary">Añadir al carrito</Button>
+                </Card.Body>
             </Card>
         </div>
     );
-}
+};
 
 export default Pizza;

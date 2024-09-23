@@ -4,11 +4,11 @@ import Card from 'react-bootstrap/Card';
 import Button from 'react-bootstrap/Button';
 
 const Pizza = () => {
-    const { id } = useParams();  // Obtener el id de la URL
+    const { id } = useParams(); 
     const [pizza, setPizza] = useState(null);
     const [error, setError] = useState(null);
 
-    // URL de la API
+    
     const url = `http://localhost:5000/api/pizzas/${id.toLowerCase()}`;
 
     const getPizza = useCallback(async () => {
@@ -24,7 +24,7 @@ const Pizza = () => {
             console.error("Error en la petición:", error);
             setError("No se pudo cargar la pizza.");
         }
-    }, [url]);  // Elimina 'id' de las dependencias, solo deja 'url'
+    }, [url]); 
 
     useEffect(() => {
         getPizza();

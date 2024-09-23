@@ -17,7 +17,7 @@ html, body {
 
 .header-container {
   width: 100%;
-  height: auto; /* Ajusta la altura según el contenido */
+  height: auto; 
   position: relative;
   text-align: center;
 }
@@ -47,5 +47,4 @@ html, body {
 }
 
 @media (min-width: 576px) and (max-width: 1200px) {
-  /* Ajustes específicos para el rango de ancho de pantalla */
 }

@@ -34,7 +34,7 @@ const Cart = () => {
         </h4>
         <Button 
           variant="primary" 
-          disabled={!token}  // Deshabilitar el botón si no hay token
+          disabled={!token} 
         >
           Pagar
         </Button>

@@ -1,10 +1,39 @@
 import { useCart } from '../context/CartContext';
 import { useUser } from '../context/UsuarioContexto';
-import { Container, Row, Col, Button } from 'react-bootstrap';
+import { Container, Row, Col, Button, Alert } from 'react-bootstrap';
+import { useState } from 'react';
 
 const Cart = () => {
-  const { carrito, aumentarCantidad, disminuirCantidad, removerDelCarrito, calcularTotal } = useCart();
+  const { carrito, aumentarCantidad, disminuirCantidad, removerDelCarrito, calcularTotal, vaciarCarrito } = useCart();
   const { token } = useUser();
+  const [message, setMessage] = useState(null);
+  const [error, setError] = useState(null);
+
+  const handleCheckout = async () => {
+    try {
+      const response = await fetch('/api/checkouts', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`, 
+        },
+        body: JSON.stringify({
+          items: carrito,
+          total: calcularTotal(),
+        }),
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        setMessage("Compra realizada con éxito. ¡Gracias por tu compra!");
+        vaciarCarrito(); 
+      } else {
+        throw new Error("Error en el proceso de compra.");
+      }
+    } catch (error) {
+      setError(error.message || "Ocurrió un error al procesar tu compra.");
+    }
+  };
 
   return (
     <div className="carrito pb-2">
@@ -13,6 +42,11 @@ const Cart = () => {
           Tu Carrito de Compras
         </h3>
 
+        {/* Mostrar mensajes de éxito o error */}
+        {message && <Alert variant="success">{message}</Alert>}
+        {error && <Alert variant="danger">{error}</Alert>}
+
+        {/* Listado de pizzas en el carrito */}
         {carrito.map((pizza) => (
           <Row key={pizza.id} className="mb-3 border p-3 rounded d-flex justify-content-between align-items-center">
             <Col>
@@ -29,12 +63,16 @@ const Cart = () => {
           </Row>
         ))}
 
+        {/* Mostrar total */}
         <h4 className="text-end w-100 m-2" style={{ color: "#03bcf4" }}>
           🍕 Total: ${calcularTotal().toLocaleString()}
         </h4>
+
+        {/* Botón de pagar */}
         <Button 
           variant="primary" 
-          disabled={!token} 
+          disabled={!token || carrito.length === 0} 
+          onClick={handleCheckout}
         >
           Pagar
         </Button>

@@ -3,38 +3,40 @@ import { useNavigate } from 'react-router-dom';
 import { useUser } from '../context/UsuarioContexto';
 
 const LoginPage = () => {
-    const { token } = useUser();
+    const { token, login } = useUser(); 
     const navigate = useNavigate();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState(false);
 
     useEffect(() => {
-        if (token){
-            navigate('/');
+        if (token) {
+            navigate('/');  
         }
     }, [token, navigate]);
 
-    const validarDatos = (e) => {
+    const validarDatos = async (e) => {
         e.preventDefault();
 
-        // Validar campos obligatorios
+        
         if (!email.trim() || !password.trim()) {
             setError(true);
             return;
         }
 
-        // Validar longitud de la contraseña
+        
         if (password.length < 6) {
             alert("Error - La contraseña debe tener al menos 6 caracteres");
             return;
         }
 
-        // Si pasa las validaciones, mostrar mensaje de éxito
-        alert("¡Inicio de sesión exitoso!");
-        setError(false);
-        setEmail('');
-        setPassword('');
+       
+        try {
+            await login(email, password);  
+            setError(false);  
+        } catch (error) {
+            setError(true);  
+        }
     };
 
     return (
@@ -49,7 +51,7 @@ const LoginPage = () => {
                             <form onSubmit={validarDatos}>
                                 {error && (
                                     <div className="alert alert-danger" role="alert">
-                                        Todos los campos son obligatorios
+                                        Error en las credenciales, inténtalo de nuevo.
                                     </div>
                                 )}
                                 <div className="form-group mb-3">
